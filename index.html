@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Pop Visual Concept Dashboard</title>
+    <!-- 폰트: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <!-- 아이콘: Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* CSS 변수 설정: 미니멀리즘 컬러 팔레트 */
+        :root {
+            --bg-body: #f8f9fa;
+            --bg-surface: #ffffff;
+            --text-primary: #1a1b1e;
+            --text-secondary: #717579;
+            --text-tertiary: #a0a5aa;
+            --accent-color: #111111;
+            --accent-subtle: #f1f3f5;
+            --border-color: #ebecf0;
+            --status-high: #2b8a3e;
+            --status-mid: #e67700;
+            
+            --sidebar-width: 260px;
+            --header-height: 72px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            --font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Typography */
+        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+        h1 { font-size: 1.5rem; }
+        h2 { font-size: 1.125rem; margin-bottom: 1rem; }
+        h3 { font-size: 0.875rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        p { font-size: 0.9375rem; color: var(--text-secondary); }
+
+        /* Layout */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Elements */
+        .brand {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-menu {
+            padding: 24px 16px;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-link:hover {
+            background-color: var(--accent-subtle);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* Header Elements */
+        .header {
+            height: var(--header-height);
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .header-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--accent-subtle);
+            color: var(--text-primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 20px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--accent-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+
+        /* Cards & Grids */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 12px 0 4px 0;
+            line-height: 1.1;
+        }
+
+        .kpi-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        /* Table/List Styles inside Cards */
+        .data-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .data-item {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .data-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: var(--accent-subtle);
+            color: var(--text-secondary);
+        }
+
+        .badge.high {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge.critical {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .topic-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        .topic-table th {
+            text-align: left;
+            padding: 12px 0;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .topic-table td {
+            padding: 16px 0;
+            font-size: 0.9375rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .topic-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .topic-keyword {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-body);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .header {
+                padding: 0 20px;
+            }
+            .content {
+                padding: 24px 20px;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            MINIMAL K-POP
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i data-lucide="layout-dashboard"></i>
+                    대시보드 홈
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i data-lucide="bar-chart-2"></i>
+                    교차 분석 데이터
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i data-lucide="users"></i>
+                    세대별 비교 분석
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i data-lucide="sparkles"></i>
+                    에스파 심층 보고서
+                </a>
+            </li>
+            <li class="nav-item" style="margin-top: 40px;">
+                <a href="#" class="nav-link">
+                    <i data-lucide="settings"></i>
+                    설정
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                비주얼 콘셉트 패러다임 전환 (2023-2026)
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" aria-label="Search">
+                    <i data-lucide="search"></i>
+                </button>
+                <button class="icon-btn" aria-label="Notifications">
+                    <i data-lucide="bell"></i>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">A2</div>
+                    <span style="font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);">AI 분석가</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="content">
+            <div class="section-header">
+                <h1>분석 요약 대시보드</h1>
+                <p>총 45개의 시장조사 및 교차적합도 데이터 세트 기준</p>
+            </div>
+
+            <!-- KPI Widgets -->
+            <section class="kpi-grid">
+                <div class="card">
+                    <h3>핵심 분석축 후보</h3>
+                    <div class="kpi-value">21<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                    <p class="kpi-desc">교차적합도 90점 이상 항목</p>
+                </div>
+                <div class="card">
+                    <h3>최우선 활용 데이터</h3>
+                    <div class="kpi-value">12<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                    <p class="kpi-desc">활용 우선순위 1순위 분류</p>
+                </div>
+                <div class="card">
+                    <h3>평균 교차적합도</h3>
+                    <div class="kpi-value">77.8<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 점</span></div>
+                    <p class="kpi-desc">전체 데이터 적합도 평균</p>
+                </div>
+            </section>
+
+            <!-- Data Grid -->
+            <section class="data-grid">
+                <!-- Left Column (Larger) -->
+                <div class="card">
+                    <h2>에스파(aespa) 심층 분석 주제</h2>
+                    <table class="topic-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45%;">보고서 주제</th>
+                                <th>분석 초점</th>
+                                <th style="width: 15%; text-align: right;">적합도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500; color: var(--text-primary);">K팝 내 메타버스 세계관의 도입과 팬덤 문화의 진화</span><br>
+                                    <span class="topic-keyword">아바타(ae), SMCU</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">가상현실 개념이 팬들의 몰입도와 콘텐츠 소비에 미친 영향</td>
+                                <td style="text-align: right;"><span class="badge high">1순위</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500; color: var(--text-primary);">기술과 엔터테인먼트 산업의 융합 비즈니스 모델</span><br>
+                                    <span class="topic-keyword">버추얼 휴먼, IP 확장</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">미래 엔터테인먼트 수익 창출 구조 (IT 결합)</td>
+                                <td style="text-align: right;"><span class="badge">2순위</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500; color: var(--text-primary);">걸그룹 비주얼 콘셉트의 패러다임 전환</span><br>
+                                    <span class="topic-keyword">사이버펑크, 위플래시</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">기존 걸크러시를 넘어선 SF적 요소 및 절제된 테크하우스 미학</td>
+                                <td style="text-align: right;"><span class="badge high">1순위</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500; color: var(--text-primary);">글로벌 Z세대 타겟팅 및 하이엔드 마케팅</span><br>
+                                    <span class="topic-keyword">앰버서더, 숏폼 콘텐츠</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">글로벌 패션 브랜드와의 협업을 통한 브랜드 가치 상승</td>
+                                <td style="text-align: right;"><span class="badge">2순위</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right Column (Smaller) -->
+                <div class="card">
+                    <h2>세대별 비주얼 콘셉트 비교 (핵심)</h2>
+                    <div class="data-list">
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">팬 역할의 변화</span>
+                                <span class="badge">90점</span>
+                            </div>
+                            <p><strong>과거(2~3세대):</strong> 단순 수용자<br>
+                            <strong>최근(4~5세대):</strong> 밈 창조자, 확산자 (참여형 브랜드 자산화)</p>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">상업성 구조 변화</span>
+                                <span class="badge high">100점</span>
+                            </div>
+                            <p><strong>과거(2~3세대):</strong> 음반 및 방송 행사 중심<br>
+                            <strong>최근(4~5세대):</strong> 하이엔드 캡슐 컬렉션, 라이프스타일 확장</p>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">비주얼 콘셉트</span>
+                                <span class="badge high">100점</span>
+                            </div>
+                            <p>단순 스타일링을 넘어 그룹의 세계관을 압축적으로 전달하는 브랜딩 언어로 진화 (다층적 브랜드 경험)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 아이콘 렌더링 스크립트 -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
