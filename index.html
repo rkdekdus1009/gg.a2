@@ -1,12 +1,10 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Pop Visual Concept Dashboard</title>
-    <!-- 폰트: Pretendard -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-    <!-- 아이콘: Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
@@ -17,8 +15,8 @@
             --text-primary: #1a1b1e;
             --text-secondary: #717579;
             --text-tertiary: #a0a5aa;
-            --accent-color: #111111;
-            --accent-subtle: #f1f3f5;
+            --accent-color: #7c3aed;
+            --accent-subtle: #f5f3ff;
             --border-color: #ebecf0;
             --status-high: #2b8a3e;
             --status-mid: #e67700;
@@ -108,6 +106,7 @@
             font-weight: 500;
             font-size: 0.9375rem;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
         .nav-link i {
@@ -190,12 +189,26 @@
             font-size: 0.875rem;
         }
 
-        /* Main Content */
+        /* Main Content & Tabs */
         .content {
             padding: 40px;
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-header {
@@ -218,6 +231,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
+            margin-bottom: 24px;
         }
 
         .kpi-value {
@@ -231,12 +245,6 @@
         .kpi-desc {
             font-size: 0.875rem;
             color: var(--text-secondary);
-        }
-
-        .data-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
         }
 
         /* Table/List Styles inside Cards */
@@ -283,11 +291,6 @@
             color: #1976d2;
         }
 
-        .badge.critical {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-
         .topic-table {
             width: 100%;
             border-collapse: collapse;
@@ -326,16 +329,9 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .data-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
-                transition: transform 0.3s ease;
             }
             .main-wrapper {
                 margin-left: 0;
@@ -354,38 +350,37 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="brand">
             MINIMAL K-POP
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a class="nav-link active" data-tab="tab-home">
                     <i data-lucide="layout-dashboard"></i>
                     대시보드 홈
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-tab="tab-cross">
                     <i data-lucide="bar-chart-2"></i>
                     교차 분석 데이터
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-tab="tab-generation">
                     <i data-lucide="users"></i>
                     세대별 비교 분석
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-tab="tab-aespa">
                     <i data-lucide="sparkles"></i>
                     에스파 심층 보고서
                 </a>
             </li>
             <li class="nav-item" style="margin-top: 40px;">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-tab="tab-settings">
                     <i data-lucide="settings"></i>
                     설정
                 </a>
@@ -393,9 +388,7 @@
         </ul>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-wrapper">
-        <!-- Header -->
         <header class="header">
             <div class="header-title">
                 비주얼 콘셉트 패러다임 전환 (2023-2026)
@@ -414,35 +407,106 @@
             </div>
         </header>
 
-        <!-- Dashboard Content -->
         <main class="content">
-            <div class="section-header">
-                <h1>분석 요약 대시보드</h1>
-                <p>총 45개의 시장조사 및 교차적합도 데이터 세트 기준</p>
+
+            <div id="tab-home" class="tab-content active">
+                <div class="section-header">
+                    <h1>분석 요약 대시보드</h1>
+                    <p>전체 분석 현황 및 연구 요약 지표</p>
+                </div>
+
+                <section class="kpi-grid">
+                    <div class="card">
+                        <h3>핵심 분석축 후보</h3>
+                        <div class="kpi-value">21<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                        <p class="kpi-desc">교차적합도 90점 이상 항목</p>
+                    </div>
+                    <div class="card">
+                        <h3>최우선 활용 데이터</h3>
+                        <div class="kpi-value">12<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                        <p class="kpi-desc">활용 우선순위 1순위 분류</p>
+                    </div>
+                    <div class="card">
+                        <h3>평균 교차적합도</h3>
+                        <div class="kpi-value">77.8<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 점</span></div>
+                        <p class="kpi-desc">전체 데이터 적합도 평균</p>
+                    </div>
+                </section>
+
+                <div class="card">
+                    <h2>시스템 안내</h2>
+                    <p style="margin-bottom: 12px; color: var(--text-secondary);">좌측 메뉴 항목을 클릭하시면 가설 검증 결과 데이터와 정형 분석 자료를 세부 뷰어 레이아웃 형태로 즉시 열람하실 수 있습니다.</p>
+                    <p style="color: var(--text-secondary);">본 대시보드는 4-5세대 걸그룹 비주얼 브랜딩 분석 지표의 교차 적합 검산을 원활하게 진행하기 위해 설계되었습니다.</p>
+                </div>
             </div>
 
-            <!-- KPI Widgets -->
-            <section class="kpi-grid">
-                <div class="card">
-                    <h3>핵심 분석축 후보</h3>
-                    <div class="kpi-value">21<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
-                    <p class="kpi-desc">교차적합도 90점 이상 항목</p>
+            <div id="tab-cross" class="tab-content">
+                <div class="section-header">
+                    <h1>교차 분석 데이터</h1>
+                    <p>시장조사 중요도 및 수행결과 반영도를 기반으로 도출된 통계 자료</p>
                 </div>
-                <div class="card">
-                    <h3>최우선 활용 데이터</h3>
-                    <div class="kpi-value">12<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
-                    <p class="kpi-desc">활용 우선순위 1순위 분류</p>
-                </div>
-                <div class="card">
-                    <h3>평균 교차적합도</h3>
-                    <div class="kpi-value">77.8<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 점</span></div>
-                    <p class="kpi-desc">전체 데이터 적합도 평균</p>
-                </div>
-            </section>
 
-            <!-- Data Grid -->
-            <section class="data-grid">
-                <!-- Left Column (Larger) -->
+                <div class="kpi-grid">
+                    <div class="card">
+                        <h3>총 데이터 행 수</h3>
+                        <div class="kpi-value">45<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 행</span></div>
+                        <p class="kpi-desc">헤더 제외 유효 분석 데이터</p>
+                    </div>
+                    <div class="card">
+                        <h3>검산 불일치 건수</h3>
+                        <div class="kpi-value">0<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                        <p class="kpi-desc">Z열 연산 공식 정밀 검산 완료</p>
+                    </div>
+                    <div class="card">
+                        <h3>보완 필요 항목</h3>
+                        <div class="kpi-value">17<span style="font-size: 1rem; color: var(--text-tertiary); font-weight: 500;"> 건</span></div>
+                        <p class="kpi-desc">정량 가이드 기준 보완 대상</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-generation" class="tab-content">
+                <div class="section-header">
+                    <h1>세대별 비교 분석</h1>
+                    <p>과거 세대와 최근 세대 간의 패러다임 전환 핵심 비교 지표</p>
+                </div>
+
+                <div class="card" style="max-width: 850px;">
+                    <h2>세대별 비주얼 콘셉트 비교 (핵심)</h2>
+                    <div class="data-list">
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">팬 역할의 변화</span>
+                                <span class="badge">90점</span>
+                            </div>
+                            <p><strong>과거(2~3세대):</strong> 기획사가 정해준 이미지의 단순 수용자<br>
+                            <strong>최근(4~5세대):</strong> 밈 창조자·이미지 해석자·자발적 확산자 (팬덤 참여형 브랜드 자산화)</p>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">상업성 구조 변화</span>
+                                <span class="badge high">100점</span>
+                            </div>
+                            <p><strong>과거(2~3세대):</strong> 음반 판매 및 방송 행사 중심<br>
+                            <strong>최근(4~5세대):</strong> 하이엔드 협업·캡슐 컬렉션·실물 패키징·라이프스타일 확장</p>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-header">
+                                <span class="data-title">비주얼 콘셉트</span>
+                                <span class="badge high">100점</span>
+                            </div>
+                            <p>단순 스타일링을 넘어 그룹의 세계관을 압축적으로 전달하는 브랜딩 언어로 진화 (다층적 브랜드 경험 제공)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-aespa" class="tab-content">
+                <div class="section-header">
+                    <h1>에스파 심층 보고서</h1>
+                    <p>aespa 브랜드 정체성 및 비주얼 테마 분석 초점 가이드</p>
+                </div>
+
                 <div class="card">
                     <h2>에스파(aespa) 심층 분석 주제</h2>
                     <table class="topic-table">
@@ -489,43 +553,50 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <!-- Right Column (Smaller) -->
-                <div class="card">
-                    <h2>세대별 비주얼 콘셉트 비교 (핵심)</h2>
-                    <div class="data-list">
-                        <div class="data-item">
-                            <div class="data-header">
-                                <span class="data-title">팬 역할의 변화</span>
-                                <span class="badge">90점</span>
-                            </div>
-                            <p><strong>과거(2~3세대):</strong> 단순 수용자<br>
-                            <strong>최근(4~5세대):</strong> 밈 창조자, 확산자 (참여형 브랜드 자산화)</p>
-                        </div>
-                        <div class="data-item">
-                            <div class="data-header">
-                                <span class="data-title">상업성 구조 변화</span>
-                                <span class="badge high">100점</span>
-                            </div>
-                            <p><strong>과거(2~3세대):</strong> 음반 및 방송 행사 중심<br>
-                            <strong>최근(4~5세대):</strong> 하이엔드 캡슐 컬렉션, 라이프스타일 확장</p>
-                        </div>
-                        <div class="data-item">
-                            <div class="data-header">
-                                <span class="data-title">비주얼 콘셉트</span>
-                                <span class="badge high">100점</span>
-                            </div>
-                            <p>단순 스타일링을 넘어 그룹의 세계관을 압축적으로 전달하는 브랜딩 언어로 진화 (다층적 브랜드 경험)</p>
-                        </div>
-                    </div>
+            <div id="tab-settings" class="tab-content">
+                <div class="section-header">
+                    <h1>환경 설정</h1>
+                    <p>대시보드 뷰어 및 개인화 레이아웃 옵션</p>
                 </div>
-            </section>
+                <div class="card">
+                    <p>미니멀리즘 대시보드 시스템 버전 v1.0.4 - 보라색 고대비 테마가 활성화되어 있습니다.</p>
+                </div>
+            </div>
+
         </main>
     </div>
 
-    <!-- 아이콘 렌더링 스크립트 -->
     <script>
+        // 아이콘 초기화
         lucide.createIcons();
+
+        // 사이드바 메뉴 탭 제어 함수
+        const navLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 모든 사이드바 링크 비활성화
+                navLinks.forEach(item => item.classList.remove('active'));
+                
+                // 모든 콘텐츠 영역 숨기기
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // 현재 클릭한 메뉴 활성화
+                this.classList.add('active');
+                
+                // data-tab 속성에 매핑된 ID를 가져와 해당 콘텐츠 레이어만 활성화
+                const targetTabId = this.getAttribute('data-tab');
+                const targetContent = document.getElementById(targetTabId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
